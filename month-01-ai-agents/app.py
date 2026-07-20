@@ -4,10 +4,18 @@ from openai import OpenAI
 load_dotenv()
 
 client = OpenAI()
+previous_response_id = None
 
-response = client.responses.create(
-    model="gpt-4.1-mini",
-    input="Explain what a modern LLM-based AI agent is in one sentence."
-)
+while True:
 
-print(response.output_text)
+    question=input("Ask me anything: ")
+
+    response = client.responses.create(
+        model="gpt-4.1-mini",
+        input=question,
+        previous_response_id=previous_response_id
+    )
+
+    previous_response_id = response.id
+
+    print("AI ANSWER: ", response.output_text)
